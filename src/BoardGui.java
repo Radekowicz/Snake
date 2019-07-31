@@ -22,7 +22,7 @@ public class BoardGui extends JPanel implements ActionListener {
     private final int DOT_SIZE = 10;
     private final int ALL_DOTS = 900;
     private final int RAND_POS = 29;
-    private final int DELAY = 140;
+    private final int DELAY = 70;
 
 
     private Timer timer;
