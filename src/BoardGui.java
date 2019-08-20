@@ -1,25 +1,20 @@
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.ImageIcon;
-import javax.swing.JPanel;
-import javax.swing.Timer;
+import javax.swing.*;
 
 public class BoardGui extends JPanel implements ActionListener {
 
-    private final int B_WIDTH = 300;
-    private final int B_HEIGHT = 300;
-    private final int DOT_SIZE = 10;
+    private final int B_WIDTH = 600;
+    private final int B_HEIGHT = 600;
+    private final int DOT_SIZE = 30;
     private final int ALL_DOTS = 900;
     private final int RAND_POS = 29;
     private final int DELAY = 70;
@@ -28,10 +23,13 @@ public class BoardGui extends JPanel implements ActionListener {
     private Timer timer;
     private Image ball;
     private Image apple;
+    private Image startPanel;
+    private Image gameOver;
 
     private Game game;
 
     private boolean isPause;
+    private boolean isMenu;
 
     public BoardGui() {
         List<Point> snake = new ArrayList<>();
@@ -43,7 +41,10 @@ public class BoardGui extends JPanel implements ActionListener {
         game = new Game(snake, Direction.UP, B_WIDTH / DOT_SIZE - 1, B_HEIGHT / DOT_SIZE - 1);
 
         isPause = false;
+        isMenu = true;
         initBoard();
+
+
 
     }
 
@@ -55,27 +56,47 @@ public class BoardGui extends JPanel implements ActionListener {
 
         setPreferredSize(new Dimension(B_WIDTH, B_HEIGHT));
 
-        ImageIcon iid = new ImageIcon("resources/dot.png");
+        ImageIcon iid = new ImageIcon("resources/square.png");
         ball = iid.getImage();
 
-        ImageIcon iid2 = new ImageIcon("resources/apple.png");
+        ImageIcon iid2 = new ImageIcon("resources/cherry.png");
         apple = iid2.getImage();
+
+        ImageIcon iid3 = new ImageIcon("resources/ent.png");
+        startPanel = iid3.getImage();
+
+        ImageIcon iid4 = new ImageIcon("resources/over.png");
+        gameOver = iid4.getImage();
 
         timer = new Timer(DELAY, this);
         timer.start();
+
     }
 
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for (Point point : game.getSnake()) {
-            g.drawImage(ball, DOT_SIZE * point.getX(), DOT_SIZE * point.getY(), this);
+        if(isMenu) {
+            g.drawImage(startPanel, 150, 200, null);
+            isPause = false;
         }
-        if (game.getCherry() != null) {
-            g.drawImage(apple, DOT_SIZE * game.getCherry().getX(), DOT_SIZE * game.getCherry().getY(), this);
+
+        else {
+
+            for (Point point : game.getSnake()) {
+                g.drawImage(ball, DOT_SIZE * point.getX(), DOT_SIZE * point.getY(), this);
+            }
+            if (game.getCherry() != null) {
+                g.drawImage(apple, DOT_SIZE * game.getCherry().getX(), DOT_SIZE * game.getCherry().getY(), this);
+            }
+
+            if (game.isGameOver()) {
+                g.drawImage(gameOver, 150, 200, null);
+            }
         }
     }
+
 
 
     @Override
@@ -87,6 +108,8 @@ public class BoardGui extends JPanel implements ActionListener {
         }
         repaint();
     }
+
+
 
     private class TAdapter extends KeyAdapter {
         @Override
@@ -108,6 +131,9 @@ public class BoardGui extends JPanel implements ActionListener {
                     break;
                 case 32:
                     isPause = !isPause;
+                    break;
+                case 10:
+                    isMenu = !isMenu;
                     break;
             }
 
