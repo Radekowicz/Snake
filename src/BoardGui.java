@@ -17,7 +17,7 @@ public class BoardGui extends JPanel implements ActionListener {
     private final int DOT_SIZE = 30;
     private final int ALL_DOTS = 900;
     private final int RAND_POS = 29;
-    private final int DELAY = 70;
+    private final int DELAY = 120;
 
 
     private Timer timer;
@@ -25,6 +25,8 @@ public class BoardGui extends JPanel implements ActionListener {
     private Image apple;
     private Image startPanel;
     private Image gameOver;
+
+    private JLabel score;
 
     private Game game;
 
@@ -68,9 +70,13 @@ public class BoardGui extends JPanel implements ActionListener {
         ImageIcon iid4 = new ImageIcon("resources/over.png");
         gameOver = iid4.getImage();
 
+        score = new JLabel("Score: " + game.getCherryCounter());
+        this.add(score);
+        score.setForeground(Color.white);
+
+
         timer = new Timer(DELAY, this);
         timer.start();
-
     }
 
     @Override
@@ -94,6 +100,10 @@ public class BoardGui extends JPanel implements ActionListener {
             if (game.isGameOver()) {
                 g.drawImage(gameOver, 150, 200, null);
             }
+
+            timer.setDelay(game.getDelay());
+
+            score.setText("Score: " + game.getCherryCounter());
         }
     }
 

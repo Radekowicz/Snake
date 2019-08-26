@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
@@ -8,8 +9,20 @@ public class Game {
     private Direction direction;
     private int max_X;
     private int max_Y;
+    private int cherryCounter = 0;
+    private int delay = 120;
 
-    
+    public int getDelay() {
+        return delay;
+    }
+
+    public void setDelay(int delay) {
+        this.delay = delay;
+    }
+
+    public int getCherryCounter() {
+        return cherryCounter;
+    }
 
     public Game(List<Point> snake, Direction direction, int max_X, int max_Y) {
         this.snake = snake;
@@ -57,10 +70,22 @@ public class Game {
             cherry = null;
 
         if(!noCherry())
-            snake.remove(snake.size()-1);
+            snake.remove(snake.size() - 1);
 
-        if (noCherry())
+
+        if (noCherry()) {
             cherry = new Point(randomInt(max_X), randomInt(max_Y));
+            cherryCounter++;
+            if (cherryCounter%2 == 1) setDelay(delay * 98 / 100);
+
+        }
+
+
+//        System.out.println(BoardGui.getDELAY());
+        System.out.println(getDelay());
+
+        System.out.println(cherryCounter);
+
     }
 
     public boolean noCherry() {
@@ -122,5 +147,13 @@ public class Game {
         }
         return false;
     }
+
+//    public int cherryCounter() {
+//        int cherryCounter = 0;
+//        if (!noCherry() ) cherryCounter++;
+//
+//        return cherryCounter;
+//    }
+
 
 }
