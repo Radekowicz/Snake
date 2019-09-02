@@ -14,7 +14,7 @@ public class BoardGui extends JPanel implements ActionListener {
 
     private final int B_WIDTH = 600;
     private final int B_HEIGHT = 600;
-    private final int DOT_SIZE = 30;
+    private final int DOT_SIZE = 20;
     private final int ALL_DOTS = 900;
     private final int RAND_POS = 29;
     private final int DELAY = 120;
@@ -32,6 +32,8 @@ public class BoardGui extends JPanel implements ActionListener {
 
     private boolean isPause;
     private boolean isMenu;
+
+
 
     public BoardGui() {
         List<Point> snake = new ArrayList<>();
@@ -74,9 +76,15 @@ public class BoardGui extends JPanel implements ActionListener {
         this.add(score);
         score.setForeground(Color.white);
 
+//        JPanel p = new JPanel();
+//        this.add(p);
+//        p.setForeground(Color.blue);
+
 
         timer = new Timer(DELAY, this);
         timer.start();
+
+
     }
 
     @Override
@@ -88,6 +96,23 @@ public class BoardGui extends JPanel implements ActionListener {
             isPause = false;
         }
 
+        else if(game.isGameOver()) {
+            isPause = true;
+
+            while (isPause != false) {
+                g.drawImage(gameOver, 150, 200, null);
+            }
+            // po wciśnięciu spacji powinno wyjść z tej pętli, a nie wychdzi
+            game.restart();
+            List<Point> snake = new ArrayList<>();
+            snake.add(new Point(20, 20));
+            snake.add(new Point(20, 21));
+            snake.add(new Point(20, 22));
+            snake.add(new Point(20, 23));
+            snake.add(new Point(20, 24));
+            game = new Game(snake, Direction.UP, B_WIDTH / DOT_SIZE - 1, B_HEIGHT / DOT_SIZE - 1);
+        }
+
         else {
 
             for (Point point : game.getSnake()) {
@@ -97,14 +122,13 @@ public class BoardGui extends JPanel implements ActionListener {
                 g.drawImage(apple, DOT_SIZE * game.getCherry().getX(), DOT_SIZE * game.getCherry().getY(), this);
             }
 
-            if (game.isGameOver()) {
-                g.drawImage(gameOver, 150, 200, null);
-            }
-
             timer.setDelay(game.getDelay());
 
             score.setText("Score: " + game.getCherryCounter());
+
         }
+
+
     }
 
 
@@ -120,12 +144,10 @@ public class BoardGui extends JPanel implements ActionListener {
     }
 
 
-
     private class TAdapter extends KeyAdapter {
         @Override
         public void keyPressed(KeyEvent e) {
             int key = e.getKeyCode();
-            System.out.println(key);
             switch(key) {
                 case 37:
                     game.changeDirection(Direction.LEFT);

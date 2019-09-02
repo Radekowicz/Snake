@@ -20,9 +20,15 @@ public class Game {
         this.delay = delay;
     }
 
+    public void setCherryCounter(int cherryCounter) {
+        this.cherryCounter = cherryCounter;
+    }
+
     public int getCherryCounter() {
         return cherryCounter;
     }
+
+
 
     public Game(List<Point> snake, Direction direction, int max_X, int max_Y) {
         this.snake = snake;
@@ -39,9 +45,8 @@ public class Game {
         for (int i = snake.size() - 1; i > 0; i--) {
             snake.set(i, snake.get(i - 1));
         }
-
-
         Point oldPoint = snake.get(0);
+
         switch(direction) {
             case DOWN:
                 snake.set(0, new Point(oldPoint.getX(), oldPoint.getY() + 1));
@@ -72,20 +77,16 @@ public class Game {
         if(!noCherry())
             snake.remove(snake.size() - 1);
 
-
         if (noCherry()) {
-            cherry = new Point(randomInt(max_X), randomInt(max_Y));
+            do {
+                cherry = new Point(randomInt(max_X), randomInt(max_Y));
+            } while (isInSnake(cherry));
+
             cherryCounter++;
-            if (cherryCounter%2 == 1) setDelay(delay * 98 / 100);
+            if (cherryCounter%2 == 1) setDelay(delay * 90 / 100);
+
 
         }
-
-
-//        System.out.println(BoardGui.getDELAY());
-        System.out.println(getDelay());
-
-        System.out.println(cherryCounter);
-
     }
 
     public boolean noCherry() {
@@ -104,14 +105,14 @@ public class Game {
         }
     }
 
-    @Override
-    public String toString() {
-        String string = "";
-        for (Point point : snake) {
-            string += point.toString();
-        }
-        return string + "\n direction: " + direction;
-    }
+//    @Override
+//    public String toString() {
+//        String string = "";
+//        for (Point point : snake) {
+//            string += point.toString();
+//        }
+//        return string + "\n direction: " + direction;
+//    }
 
     public Point getCherry() {
         return cherry;
@@ -148,12 +149,21 @@ public class Game {
         return false;
     }
 
-//    public int cherryCounter() {
-//        int cherryCounter = 0;
-//        if (!noCherry() ) cherryCounter++;
-//
-//        return cherryCounter;
-//    }
+    public boolean isInSnake(Point point) {
+        for (Point snakePoint : snake) {
+            if (point.equals(snakePoint)) return true;
+        }
+        return false;
+    }
+
+    public void restart() {
+        for (int i = snake.size() - 1; i >= 0; i--) snake.remove(i);
+        changeDirection(Direction.UP);
+        setCherryCounter(0);
+        setDelay(120);
+    }
+
+
 
 
 }
