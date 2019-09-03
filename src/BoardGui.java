@@ -9,6 +9,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
+import java.awt.Font;
+
 
 public class BoardGui extends JPanel implements ActionListener {
 
@@ -76,11 +78,6 @@ public class BoardGui extends JPanel implements ActionListener {
         this.add(score);
         score.setForeground(Color.white);
 
-//        JPanel p = new JPanel();
-//        this.add(p);
-//        p.setForeground(Color.blue);
-
-
         timer = new Timer(DELAY, this);
         timer.start();
 
@@ -92,25 +89,13 @@ public class BoardGui extends JPanel implements ActionListener {
         super.paintComponent(g);
 
         if(isMenu) {
-            g.drawImage(startPanel, 150, 200, null);
-            isPause = false;
-        }
-
-        else if(game.isGameOver()) {
-            isPause = true;
-
-            while (isPause != false) {
-                g.drawImage(gameOver, 150, 200, null);
-            }
-            // po wciśnięciu spacji powinno wyjść z tej pętli, a nie wychdzi
-            game.restart();
-            List<Point> snake = new ArrayList<>();
-            snake.add(new Point(20, 20));
-            snake.add(new Point(20, 21));
-            snake.add(new Point(20, 22));
-            snake.add(new Point(20, 23));
-            snake.add(new Point(20, 24));
-            game = new Game(snake, Direction.UP, B_WIDTH / DOT_SIZE - 1, B_HEIGHT / DOT_SIZE - 1);
+//            g.drawImage(startPanel, 150, 200, null);
+            g.setColor(Color.GREEN);
+            g.setFont(new Font("Calibri", Font.PLAIN, 42));
+            g.drawString("TO START", 190   , 280);
+            g.setFont(new Font("Calibri", Font.PLAIN, 42));
+            g.drawString("Press ENTER", 172, 330);
+//            isPause = false;
         }
 
         else {
@@ -125,6 +110,18 @@ public class BoardGui extends JPanel implements ActionListener {
             timer.setDelay(game.getDelay());
 
             score.setText("Score: " + game.getCherryCounter());
+
+            if(game.isGameOver()) {
+//                g.drawImage(gameOver, 150, 200, null);
+                g.setColor(Color.RED);
+                g.setFont(new Font("Calibri", Font.BOLD, 60));
+                g.drawString("GAME OVER", 120   , 300);
+                g.setFont(new Font("Calibri", Font.PLAIN, 22));
+                g.drawString("Press SPACE to continue", 178, 350);
+
+
+
+            }
 
         }
 
@@ -163,6 +160,7 @@ public class BoardGui extends JPanel implements ActionListener {
                     break;
                 case 32:
                     isPause = !isPause;
+                    if(game.isGameOver()) game.restart();
                     break;
                 case 10:
                     isMenu = !isMenu;

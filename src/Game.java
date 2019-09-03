@@ -158,6 +158,11 @@ public class Game {
 
     public void restart() {
         for (int i = snake.size() - 1; i >= 0; i--) snake.remove(i);
+        snake.add(new Point(20, 20));
+        snake.add(new Point(20, 21));
+        snake.add(new Point(20, 22));
+        snake.add(new Point(20, 23));
+        snake.add(new Point(20, 24));
         changeDirection(Direction.UP);
         setCherryCounter(0);
         setDelay(120);
