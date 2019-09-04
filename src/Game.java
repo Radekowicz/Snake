@@ -11,6 +11,8 @@ public class Game {
     private int max_Y;
     private int cherryCounter = 0;
     private int delay = 120;
+    private int shit = 0;
+//    private List<Integer> scoreList;
 
     public int getDelay() {
         return delay;
@@ -28,7 +30,9 @@ public class Game {
         return cherryCounter;
     }
 
-
+    public int getShit() {
+        return shit;
+    }
 
     public Game(List<Point> snake, Direction direction, int max_X, int max_Y) {
         this.snake = snake;
@@ -74,7 +78,7 @@ public class Game {
         if (Objects.equals(cherry, head))
             cherry = null;
 
-        if(!noCherry())
+        if (!noCherry())
             snake.remove(snake.size() - 1);
 
         if (noCherry()) {
@@ -84,8 +88,11 @@ public class Game {
 
             cherryCounter++;
             if (cherryCounter%2 == 1) setDelay(delay * 90 / 100);
+        }
 
-
+        if(isGameOver()) {
+            shit++;
+//            scoreList.add(getCherryCounter());
         }
     }
 

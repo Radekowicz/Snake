@@ -35,7 +35,7 @@ public class BoardGui extends JPanel implements ActionListener {
     private boolean isPause;
     private boolean isMenu;
 
-
+    List<Integer> scoreList = new ArrayList<>();
 
     public BoardGui() {
         List<Point> snake = new ArrayList<>();
@@ -46,12 +46,14 @@ public class BoardGui extends JPanel implements ActionListener {
         snake.add(new Point(1, 1));
         game = new Game(snake, Direction.UP, B_WIDTH / DOT_SIZE - 1, B_HEIGHT / DOT_SIZE - 1);
 
+        scoreList.add(0, 0);
+//        scoreList.add(1, 43);
+//        scoreList.add(2, 563);
+
+
         isPause = false;
         isMenu = true;
         initBoard();
-
-
-
     }
 
     private void initBoard() {
@@ -119,13 +121,15 @@ public class BoardGui extends JPanel implements ActionListener {
                 g.setFont(new Font("Calibri", Font.PLAIN, 22));
                 g.drawString("Press SPACE to continue", 178, 350);
 
+//                scoreList.add(game.getShit(), game.getCherryCounter());
 
+                for(int i=0; i<scoreList.size(); i++) {
+                    g.drawString(  "Score "+ game.getShit() + ". " + scoreList.get(i).toString(), 40, 40+(i*30));
+
+                }
 
             }
-
         }
-
-
     }
 
 
@@ -160,13 +164,26 @@ public class BoardGui extends JPanel implements ActionListener {
                     break;
                 case 32:
                     isPause = !isPause;
-                    if(game.isGameOver()) game.restart();
+                    if(game.isGameOver()) {
+                        scoreList.add(game.getShit(),game.getCherryCounter());
+                        game.restart();
+                    }
                     break;
                 case 10:
-                    isMenu = !isMenu;
+                    if(!game.isGameOver()) {
+                        isMenu = !isMenu;
+                    }
                     break;
             }
 
         }
     }
+
+//    @Override
+//    public String toString() {
+//        String string = "";
+//        for(int i=0; i<scoreList.size(); i++) {
+//            string += scoreList
+//        }
+//    }
 }
