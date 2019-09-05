@@ -11,8 +11,7 @@ public class Game {
     private int max_Y;
     private int cherryCounter = 0;
     private int delay = 120;
-    private int shit = 0;
-//    private List<Integer> scoreList;
+    private List<Integer> scoreList;
 
     public int getDelay() {
         return delay;
@@ -30,17 +29,14 @@ public class Game {
         return cherryCounter;
     }
 
-    public int getShit() {
-        return shit;
-    }
-
-    public Game(List<Point> snake, Direction direction, int max_X, int max_Y) {
+    public Game(List<Point> snake, Direction direction, int max_X, int max_Y, List<Integer> scoreList) {
         this.snake = snake;
         this.direction = direction;
         this.max_X = max_X;
         this.max_Y = max_Y;
 
         this.cherry = new Point(randomInt(max_X), randomInt(max_Y));
+        this.scoreList = scoreList;
     }
 
     public void tick() {
@@ -88,11 +84,6 @@ public class Game {
 
             cherryCounter++;
             if (cherryCounter%2 == 1) setDelay(delay * 90 / 100);
-        }
-
-        if(isGameOver()) {
-            shit++;
-//            scoreList.add(getCherryCounter());
         }
     }
 
@@ -164,6 +155,7 @@ public class Game {
     }
 
     public void restart() {
+        scoreList.add(getCherryCounter());
         for (int i = snake.size() - 1; i >= 0; i--) snake.remove(i);
         snake.add(new Point(20, 20));
         snake.add(new Point(20, 21));
@@ -174,8 +166,4 @@ public class Game {
         setCherryCounter(0);
         setDelay(120);
     }
-
-
-
-
 }

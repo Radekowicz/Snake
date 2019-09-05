@@ -21,7 +21,6 @@ public class BoardGui extends JPanel implements ActionListener {
     private final int RAND_POS = 29;
     private final int DELAY = 120;
 
-
     private Timer timer;
     private Image ball;
     private Image apple;
@@ -35,7 +34,7 @@ public class BoardGui extends JPanel implements ActionListener {
     private boolean isPause;
     private boolean isMenu;
 
-    List<Integer> scoreList = new ArrayList<>();
+    List<Integer> scoreList = new ArrayList<>(); //not sure if it's correct
 
     public BoardGui() {
         List<Point> snake = new ArrayList<>();
@@ -44,12 +43,7 @@ public class BoardGui extends JPanel implements ActionListener {
         snake.add(new Point(3, 1));
         snake.add(new Point(2, 1));
         snake.add(new Point(1, 1));
-        game = new Game(snake, Direction.UP, B_WIDTH / DOT_SIZE - 1, B_HEIGHT / DOT_SIZE - 1);
-
-        scoreList.add(0, 0);
-//        scoreList.add(1, 43);
-//        scoreList.add(2, 563);
-
+        game = new Game(snake, Direction.UP, B_WIDTH / DOT_SIZE - 1, B_HEIGHT / DOT_SIZE - 1, scoreList);
 
         isPause = false;
         isMenu = true;
@@ -121,13 +115,15 @@ public class BoardGui extends JPanel implements ActionListener {
                 g.setFont(new Font("Calibri", Font.PLAIN, 22));
                 g.drawString("Press SPACE to continue", 178, 350);
 
-//                scoreList.add(game.getShit(), game.getCherryCounter());
+                g.setColor(Color.white);
 
-                for(int i=0; i<scoreList.size(); i++) {
-                    g.drawString(  "Score "+ game.getShit() + ". " + scoreList.get(i).toString(), 40, 40+(i*30));
+                if (scoreList != null) {
+                    for (int i = 0; i < scoreList.size(); i++)
+                        g.drawString( (i + 1) + ". Score: " + scoreList.get(i).toString(), 250, 400 + (i * 30));
 
+                    int i = scoreList.size();
+                    g.drawString((i + 1) + ". Score: " + game.getCherryCounter(), 250, 400 + (i * 30));
                 }
-
             }
         }
     }
@@ -165,7 +161,6 @@ public class BoardGui extends JPanel implements ActionListener {
                 case 32:
                     isPause = !isPause;
                     if(game.isGameOver()) {
-                        scoreList.add(game.getShit(),game.getCherryCounter());
                         game.restart();
                     }
                     break;
@@ -175,7 +170,6 @@ public class BoardGui extends JPanel implements ActionListener {
                     }
                     break;
             }
-
         }
     }
 
